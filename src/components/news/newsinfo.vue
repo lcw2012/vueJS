@@ -14,6 +14,10 @@
         <div class="content" v-html = "article.content">
 
         </div>
+<!--3.0 评论组件的使用-->
+        <div>
+            <subcomment :artid="artid"></subcomment>
+        </div>
     </div>
 </template>
 <style scoped>
@@ -39,15 +43,23 @@
 </style>
 <script>
     import common from '../../kits/common.js';
+    //1.0 导入评论组件
+    import subcomment from '../subcomp/subcomment.vue'
 
     export default{
         data(){
             return{
-                article:{}
+                article:{},
+                artid:0 // 3.0 定义评论组件要接收的id值
             }
+        },
+        components:{
+            subcomment // 2.0 将评论组件注册为私有组件
         },
         created(){
             this.getdata();
+            //4.0 获取到url传入过来的id值
+            this.artid = this.$route.params.id;
         },
         methods:{
            getdata(){
