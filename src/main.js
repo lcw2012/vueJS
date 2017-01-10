@@ -25,10 +25,12 @@ Vue.use(vueRouter);
 Vue.use(vueResource);  //使用vueResource 对象才能自动在Vue对象实例上挂在一个$http
 
 //2.0.1 在Vue上注册一个全局过滤器名称叫做 tolowercase1
-Vue.filter('tolowercase',function(input){
-	return input.toLowerCase() +'  ->from global';
+import moment from 'moment';
+Vue.filter('fmtdate',function(input,datefmtstring){
+	//这里由于传入的datefmtstring的格式种类很多，我们自己实现起来是比较复杂，要做很多的if判断，所以
+	//我们使用moment.js的日期格式化插件 :http://momentjs.cn/
+	return moment(input).format(datefmtstring);
 });
-
 
 //3.0 定义路由规则对象
 import App from './App.vue'
@@ -36,6 +38,8 @@ import Home from './components/Home/Home.vue';
 import member from './components/member/member.vue';
 import shopcar from './components/shopcar/shopcar.vue';
 import search from './components/search/search.vue';
+import newslist from './components/news/newslist.vue';
+import newsinfo from './components/news/newsinfo.vue';
 
 let router = new vueRouter({
 	linkActiveClass:'mui-active',
@@ -46,7 +50,9 @@ let router = new vueRouter({
 		{name:'home',path:'/Home',component:Home},
 		{name:'member',path:'/member',component:member},
 		{name:'shopcar',path:'/shopcar',component:shopcar},
-		{name:'search',path:'/search',component:search}
+		{name:'search',path:'/search',component:search},
+		{name:'newslist',path:'/news/newslist',component:newslist}, //图文资讯列表的路由规则
+		{name:'newsinfo',path:'/news/newsinfo/:id',component:newsinfo} //图文资讯详细描述的路由规则
 	]
 });
 

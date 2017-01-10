@@ -6,10 +6,10 @@
 	<div class="mui-content">
 		        <ul class="mui-table-view mui-grid-view mui-grid-9">
 		            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-		            <a href="#">
+		            <router-link to="/news/newslist">
 	                    <span class="mui-icon mui-icon-home"></span>
 	                    <div class="mui-media-body">新闻资讯</div>
-	                    </a>
+					</router-link >
                     </li>
 		           
 		            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
@@ -51,8 +51,7 @@
 <script>
 	//1.0 导入 subimgsilder.vue组件
 	import subimgsilder from '../subcomp/subimgsilder.vue';
-
-
+	import common from '../../kits/common.js'
 export default{
 	data(){
 		return {
@@ -72,7 +71,7 @@ export default{
 	},
 	methods:{
 			getlunbo(){
-				var url = 'http://localhost:8899/api/getlunbo';
+				var url = common.apihost+'/api/getlunbo';
 				this.$http.get(url).then(res=>{
 					//成功则将res.body.message中的数据赋值给this.list属性即可
 					this.list = res.body.message;
