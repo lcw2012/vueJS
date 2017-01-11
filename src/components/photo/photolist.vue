@@ -18,6 +18,10 @@
             <ul>
                 <li v-for="item in list">
                     <img v-lazy="item.img_url">
+                    <p>
+                        <span class="title" v-text="item.title"></span><br />
+                        {{item.zhaiyao}}
+                    </p>
                 </li>
             </ul>
 
@@ -27,11 +31,22 @@
 <style scoped>
 
     /*懒加载图片样式begin*/
+    .imglist p{
+        color:#fff;
+        position: absolute;
+        bottom: 0px;
+        left:0px;
+        background-color: rgba(0,0,0,0.4);
+    }
+    .imglist .title{
+        font-weight: bold;
+    }
     .imglist ul{
         padding: 0;
     }
     .imglist li{
         list-style: none;
+        position: relative;
     }
     .imglist img{
         width: 100%;
@@ -91,6 +106,9 @@
             },
            //2.0 根据分类的id获取图片数据
             getimglist(cateid){
+                //这里注意要先清空，否则会导致第一张图片不会被覆盖
+                this.list = '';
+
                 let url = common.apihost +'/api/getimages/'+cateid;
                 this.$http.get(url).then(res=>{
                     //由于服务器返回的img_url的地址只是路径的部分，所以我们应该拼接上图片云服务器的前缀
