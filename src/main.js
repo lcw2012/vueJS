@@ -40,6 +40,8 @@ import shopcar from './components/shopcar/shopcar.vue';
 import search from './components/search/search.vue';
 import newslist from './components/news/newslist.vue';
 import newsinfo from './components/news/newsinfo.vue';
+import photolist from './components/photo/photolist.vue';
+
 
 let router = new vueRouter({
 	linkActiveClass:'mui-active',
@@ -52,7 +54,8 @@ let router = new vueRouter({
 		{name:'shopcar',path:'/shopcar',component:shopcar},
 		{name:'search',path:'/search',component:search},
 		{name:'newslist',path:'/news/newslist',component:newslist}, //图文资讯列表的路由规则
-		{name:'newsinfo',path:'/news/newsinfo/:id',component:newsinfo} //图文资讯详细描述的路由规则
+		{name:'newsinfo',path:'/news/newsinfo/:id',component:newsinfo}, //图文资讯详细描述的路由规则
+		{name:'photolist',path:'/photo/photolist',component:photolist} //图片分享列表组件
 	]
 });
 
