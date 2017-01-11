@@ -24,9 +24,16 @@
             <!--</div>-->
 
         </div>
+
+        <!--加载跟多按钮-->
+        <mt-button class="more" type="danger" size="large" plain @click="getmore">加载更多</mt-button>
+
     </div>
 </template>
 <style scoped>
+    .more{
+        margin-top: 10px;
+    }
     .tmpl{
         padding: 5px;
     }
@@ -67,19 +74,19 @@
     export default{
         data(){
             return{
-               comments:[] //用来存放当前数据的评论信息列表
+               comments:[], //用来存放当前数据的评论信息列表
+                pageindex:1 //这是获取评论的页码，默认为第1页
             }
         },
         created(){
-            this.getcomment(1);
+            this.getcomment(this.pageindex);
         }
         ,
         methods:{
            //1.0 提交评论
             postcomment(){
                let url = common.apihost+'/api/postcomment/'+this.artid;
-                //如何去获取到或页面上的评论的内容
-//             可以通过  console.log(this.$refs.postcontent);
+                //如何去获取到或页面上的评论的内容可以通过  console.log(this.$refs.postcontent);
                 //1.0 通过vue来获取textarea的值
                 let contentText = this.$refs.postcontent.value;
                 //判断是否有值
@@ -94,22 +101,30 @@
                     Toast('评论提交成功');
 
                     //重新加载评论
-                    this.getcomment(1);
+                    this.getcomment(this.pageindex);
 
                     //清空文本空中的值
                 this.$refs.postcontent.value = '';
 
-                },res=>{console.log('评论提交失败')});
+                },res => {console.log('评论提交失败');});
             },
            //2.0 获取评论
             getcomment(pageindex){
                 let url = common.apihost+'/api/getcomments/'+this.artid+'?pageindex='+pageindex;
                 this.$http.get(url).then(res=>{
-                    this.comments = res.body.message;
-
+                    //由于我们要实现加载更多功能，所以这里不应该使最新数据覆盖数组，而是将最新数据追加到comments中
+                    //this.comments = res.body.message;
+                    this.comments = this.comments.concat(res.body.message);
                 },res=>{
                     console.log('获取评论数据失败');
                 });
+            },
+            //3.0 获取跟多数据
+            getmore(){
+                //1.0 将pageindex加一
+                this.pageindex++;
+                //2.0 讲自增以后的pageindex值传入getcomment方法即可获取数据
+                this.getcomment(this.pageindex);
             }
         },
         props:['artid']  //用来接收当前评论数据的所属内容的id,这个值可以在vue对象中的任何地方使用
