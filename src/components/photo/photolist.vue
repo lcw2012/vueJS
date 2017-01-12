@@ -3,7 +3,7 @@
         <!--1.0 分类-->
 
           <div class="cate">
-              <ul>
+              <ul id="cateul">
                   <li>
                       <a @click="getimglist(0)">全部</a>
                   </li>
@@ -17,7 +17,9 @@
         <div class="imglist">
             <ul>
                 <li v-for="item in list">
-                    <img v-lazy="item.img_url">
+                    <router-link v-bind='{to:"/photo/info/"+item.id}'>
+                        <img v-lazy="item.img_url">
+                    </router-link>
                     <p>
                         <span class="title" v-text="item.title"></span><br />
                         {{item.zhaiyao}}
@@ -68,7 +70,7 @@
     }
     .cate ul{
         padding-left: 10px;
-        width: 10000px;
+        width: 320px;
         margin: 0;
     }
    .cate li{
@@ -84,7 +86,8 @@
     /*分类样式end*/
 </style>
 <script>
-    import common from '../../kits/common.js'
+    import common from '../../kits/common.js';
+    import { Indicator } from 'mint-ui';
     export default{
         data(){
             return{
@@ -102,12 +105,18 @@
                 let url = common.apihost +'/api/getimgcategory';
                 this.$http.get(url).then(res=>{
                     this.catelist = res.body.message;
+
+                // 重新根据当前分类的个数计算出整个ul的宽度，动态赋值
+                let w = 60 * (res.body.message.length + 1);
+                 document.getElementById('cateul').style.width = w+'px';
                 });
             },
            //2.0 根据分类的id获取图片数据
             getimglist(cateid){
                 //这里注意要先清空，否则会导致第一张图片不会被覆盖
                 this.list = '';
+                //这个位置应该提醒用户正在加载中
+                Indicator.open('正在加载中...');
 
                 let url = common.apihost +'/api/getimages/'+cateid;
                 this.$http.get(url).then(res=>{
@@ -120,6 +129,9 @@
                 }
 
                 this.list =  tmplist;
+
+                //在这个位置关闭正在加载中的提示
+                Indicator.close();
             });
             }
         }

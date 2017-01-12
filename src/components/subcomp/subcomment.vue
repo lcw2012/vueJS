@@ -101,7 +101,7 @@
                     Toast('评论提交成功');
 
                     //重新加载评论
-                    this.getcomment(this.pageindex);
+                    this.getcomment(this.pageindex,true);
 
                     //清空文本空中的值
                 this.$refs.postcontent.value = '';
@@ -109,12 +109,19 @@
                 },res => {console.log('评论提交失败');});
             },
            //2.0 获取评论
-            getcomment(pageindex){
+            getcomment(pageindex,isreload){
                 let url = common.apihost+'/api/getcomments/'+this.artid+'?pageindex='+pageindex;
                 this.$http.get(url).then(res=>{
                     //由于我们要实现加载更多功能，所以这里不应该使最新数据覆盖数组，而是将最新数据追加到comments中
                     //this.comments = res.body.message;
-                    this.comments = this.comments.concat(res.body.message);
+                    //这种写法可能存在一个问题不会及时刷新页面
+//                    this.comments = this.comments.concat(res.body.message);
+                    if(isreload){
+                        this.comments = res.body.message;
+                    }else{
+                        //这是给加载跟多使用的
+                        this.comments = this.comments.concat(res.body.message);
+                    }
                 },res=>{
                     console.log('获取评论数据失败');
                 });

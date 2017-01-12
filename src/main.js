@@ -24,6 +24,10 @@ import '../statics/css/site.css';
 Vue.use(vueRouter);
 Vue.use(vueResource);  //使用vueResource 对象才能自动在Vue对象实例上挂在一个$http
 
+//2.0.1 加载图片预览组件
+import VuePreview from 'vue-preview'
+Vue.use(VuePreview);
+
 //2.0.1 在Vue上注册一个全局过滤器名称叫做 tolowercase1
 import moment from 'moment';
 Vue.filter('fmtdate',function(input,datefmtstring){
@@ -41,6 +45,7 @@ import search from './components/search/search.vue';
 import newslist from './components/news/newslist.vue';
 import newsinfo from './components/news/newsinfo.vue';
 import photolist from './components/photo/photolist.vue';
+import photoinfo from './components/photo/info.vue';
 
 
 let router = new vueRouter({
@@ -55,7 +60,8 @@ let router = new vueRouter({
 		{name:'search',path:'/search',component:search},
 		{name:'newslist',path:'/news/newslist',component:newslist}, //图文资讯列表的路由规则
 		{name:'newsinfo',path:'/news/newsinfo/:id',component:newsinfo}, //图文资讯详细描述的路由规则
-		{name:'photolist',path:'/photo/photolist',component:photolist} //图片分享列表组件
+		{name:'photolist',path:'/photo/photolist',component:photolist}, //图片分享列表组件
+		{name:'photoinfo',path:'/photo/info/:id',component:photoinfo} //图片的详情
 	]
 });
 
