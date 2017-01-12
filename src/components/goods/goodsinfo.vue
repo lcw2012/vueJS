@@ -13,7 +13,7 @@
                 <!--放数量的组件-->
             </div>
             <mt-button type="primary" size="small">立即购买</mt-button>
-            <mt-button type="danger" size="small">加入购物车</mt-button>
+            <mt-button type="danger" size="small"  @click="toshopcar">加入购物车</mt-button>
 
         </div>
         <!--3.0 商品参数区域-->
@@ -25,12 +25,18 @@
                 <li>上架时间:{{goosinfodata.add_time | fmtdate('YYYY-MM-DD')}}</li>
             </ul>
         </div>
-        <!--4.0 商品的图文信息描述（使用一个新组goosdesc.vue件来完成）-->
-        <!--5.0 商品的评论区域 subcomment.vue-->
+        <!--4.0 商品的图文信息描述（使用一个新组goosdesc.vue件来完成）
+            5.0 商品的评论区域 subcomment.vue
+        -->
+        <div class="footer">
+            <mt-button @click="desc" plain type="primary" size="large">图文介绍</mt-button>
+            <mt-button @click="comment" class="mt1" plain type="danger"  size="large">商品评论</mt-button>
+        </div>
+
     </div>
 </template>
 <style scoped>
-   .subimgsilder, .sell,.params{
+   .subimgsilder, .sell,.params,.footer{
        border: 1px solid rgba(92,92,92,0.3);
        margin: 5px;
        padding: 5px;
@@ -69,6 +75,11 @@
         list-style: none;
     }
    /*3.0 商品参数区域end*/
+
+    /*4.0 底部*/
+    .mt1{
+        margin-top: 20px;
+    }
 </style>
 <script>
 //1.0.1 导入组件subimgsilder.vue
@@ -77,11 +88,11 @@ import common from '../../kits/common.js';
 
 //2.0.1 导入subnumber.vue
 import SubNumber from '../subcomp/subnumber.vue';
-
-
+import {bus} from '../../bus.js';
     export default{
         data(){
             return{
+                goodscount:1,
                 imagelist:[], //1.0.2 这个变量存储的是当前商品的轮播图图片数组
                 goosinfodata:{} //2.0.2 这个变量存储的是当前商品的描述信息（包括标题，价格等）
             }
@@ -105,7 +116,7 @@ import SubNumber from '../subcomp/subnumber.vue';
            },
             //2.0.2 定义一个方法用来接收子组件传入过来的值
             getcount(count){
-                console.log('count='+count);
+                this.goodscount = count;
             },
             //2.0.3 定义个方法用来获取商品的介绍信息
             getgoodsinfo(){
@@ -114,6 +125,22 @@ import SubNumber from '../subcomp/subnumber.vue';
                 this.$http.get(url).then(res=>{
                     this.goosinfodata = res.body.message[0];
                 });
+            },
+            //5.0.1 商品评论
+            comment(){
+                //1.0 获取到商品的id
+                let id = this.$route.params.id;
+
+                //2.0 跳转到商品评论组件comment.vue
+                this.$router.push({name:'goodscomment',params:{id:id}});
+            },
+            //4.0.1 定义商品图文显示方法
+            desc(){
+                let id = this.$route.params.id;
+                this.$router.push({name:'goodsdesc',params:{id:id}})
+            },
+            toshopcar(){
+                bus.$emit('toshopcar',this.goodscount);
             }
         },
         components:{

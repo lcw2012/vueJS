@@ -27,7 +27,7 @@
 
 		<router-link class="mui-tab-item" to="/shopcar">
 		<span class="mui-icon mui-icon-home">
-			<span class="mui-badge">9</span>
+			<span class="mui-badge">0</span>
 		</span>
 			<span class="mui-tab-label">购物车</span>
 		</router-link>
@@ -41,6 +41,12 @@
 </template>
 
 <script>
+	import {bus} from './bus.js';
+	bus.$on('toshopcar',function(count){
+		let obj = document.getElementsByClassName('mui-badge')[0];
+		obj.innerText = count;
+	});
+
 	export default{
 		data(){
 			return {
