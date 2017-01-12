@@ -46,6 +46,8 @@ import newslist from './components/news/newslist.vue';
 import newsinfo from './components/news/newsinfo.vue';
 import photolist from './components/photo/photolist.vue';
 import photoinfo from './components/photo/info.vue';
+import goodslist from './components/goods/goodslist.vue';
+import goodsinfo from './components/goods/goodsinfo.vue';
 
 
 let router = new vueRouter({
@@ -61,7 +63,10 @@ let router = new vueRouter({
 		{name:'newslist',path:'/news/newslist',component:newslist}, //图文资讯列表的路由规则
 		{name:'newsinfo',path:'/news/newsinfo/:id',component:newsinfo}, //图文资讯详细描述的路由规则
 		{name:'photolist',path:'/photo/photolist',component:photolist}, //图片分享列表组件
-		{name:'photoinfo',path:'/photo/info/:id',component:photoinfo} //图片的详情
+		{name:'photoinfo',path:'/photo/info/:id',component:photoinfo}, //图片的详情
+		{name:'goodslist',path:'/goods/goodslist',component:goodslist}, //商品列表组件
+		{name:'goodsinfo',path:'/goods/goodsinfo/:id',component:goodsinfo} //商品详情组件
+		
 	]
 });
 
