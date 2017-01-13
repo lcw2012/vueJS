@@ -20,7 +20,7 @@
 		<div class="total">
 			<div class="left">
 				<h5>总计(不含运费)</h5>
-				<span>已经勾选商品0件,总价￥0元</span>
+				<span>已经勾选商品{{selectedcount}}件,总价￥{{settment}}元</span>
 			</div>
 			<div class="right">
 				<mt-button class="settm" type="danger" size="normal">去结算</mt-button>
@@ -103,8 +103,9 @@
 export default{
 	data(){
 		return {
-			values:[],  //用来存储每条数据的switch的值的
-			shopcarlist :[] //用来储存购物车中的商品
+			selectedcount:0, //选择商品的总个数
+			values:[],  //用来存储每条数据的switch的值的,只要选中了，里面的存储的就是true
+			shopcarlist :[] //用来储存购物车中的商品[thumb_path:'http://..',count:1]
 		}
 	},
 	created(){
@@ -120,7 +121,7 @@ export default{
 			//1.0 从localStorage中获取所有的商品id
 			// arr的数据格式： [{goodsid:1,count:1},{goodsid:1,count:2}{},{}]
 			let arr = getItem();
-			let goodsObj = {}; //负责将goodsid的值当做属性名称，count值当做属性值
+			let goodsObj = {}; //负责将goodsid的值当做属性名称，count值当做属性值,格式：{89,12,90,1}
 			arr.forEach(item=>{
 				if(goodsObj[item.goodsid]){
 					//存在，则将count追加上去
@@ -147,10 +148,41 @@ export default{
 				// 应该将thumb_path属性的图片字符串加上域名前缀
 			res.body.message.forEach(item=>{
 				item.thumb_path = common.imghost + item.thumb_path;
-				item.count = goodsObj[item.id]; //
+				item.count = goodsObj[item.id];
+
+				//初始化values数组，值全部设置为false]
+				this.values.push(false);
 			});
 				this.shopcarlist = res.body.message;
+
 			});
+		},
+		//统计选择商品的总价
+		getTotalAmount(){
+			let totalAmount = 0;
+			this.values.forEach((item,index)=>{
+				if(item ==true){
+				let goodsinfo = this.shopcarlist[index] //获取到当前选择的商品
+				//开始计算商品总价
+				let amount = goodsinfo.count * goodsinfo.sell_price;
+				totalAmount+=amount;
+				}
+			});
+
+			return totalAmount;
+		}
+	},
+	computed:{
+		//统计总价格
+		settment(){
+			//注意点：这个settment的计算属性是依赖于this.values数组的值的改变而会被重新触发
+			//并且一定要在<template>中使用settment才会被触发
+			//1.0 统计当前选择的个数
+			let trueArr = 	this.values.filter(v=>v==true);
+			this.selectedcount = trueArr.length;
+
+			//2.0 计算价格即可
+			return this.getTotalAmount();
 		}
 	},
 	components:{
