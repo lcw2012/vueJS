@@ -27,7 +27,7 @@
 
 		<router-link class="mui-tab-item" to="/shopcar">
 		<span class="mui-icon mui-icon-home">
-			<span class="mui-badge">0</span>
+			<span id="badge" class="mui-badge">0</span>
 		</span>
 			<span class="mui-tab-label">购物车</span>
 		</router-link>
@@ -41,10 +41,17 @@
 </template>
 
 <script>
-	import {bus} from './bus.js';
-	bus.$on('toshopcar',function(count){
-		let obj = document.getElementsByClassName('mui-badge')[0];
-		obj.innerText = count;
+	//6.0.2 注册commonvue.js(用来接收goodsinfo.vue中通过vueobj.$emit()发送过来的数据 )
+	import {vueobj} from './kits/commonvue.js';
+	//6.o.3 注册接收事件
+	vueobj.$on('shopdata',function(data){
+		//由于vueobj和export default是不同的vue对象，所以在此处必须通过原生js来操作dom实现购物车数量的增加
+		let badge = document.getElementById('badge');
+		let count = badge.innerText - 0; // 获取原始值
+		count+=data;  // 在原始值上增加新数据
+
+		// 将新数据同步到dom中
+		badge.innerText = count;
 	});
 
 	export default{

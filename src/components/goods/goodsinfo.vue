@@ -9,20 +9,27 @@
                 市场价:<s>￥{{goosinfodata.sell_price}}</s>   销售价:<span>￥{{goosinfodata.market_price}}</span>
             </div>
             <div class="count">
-                购买数量：<sub-number class="subnumber" v-on:count="getcount"></sub-number>
                 <!--放数量的组件-->
+                购买数量：<sub-number class="subnumber" v-on:count="getcount"></sub-number>
+                <!--动画小球-->
+                <transition v-on:before-enter="beforeEnter"
+                            v-on:enter="enter"
+                            v-on:after-enter="afterEnter">
+                    <div v-show="isshow" class="ball"></div>
+                </transition>
+
             </div>
             <mt-button type="primary" size="small">立即购买</mt-button>
-            <mt-button type="danger" size="small"  @click="toshopcar">加入购物车</mt-button>
+            <mt-button type="danger" size="small" @click="toshopdata">加入购物车</mt-button>
 
         </div>
         <!--3.0 商品参数区域-->
         <div class="params">
             <h6 class="h6">商品参数</h6>
             <ul>
-                <li>商品货号:{{goosinfodata.goods_no}}</li>
-                <li>库存情况:{{goosinfodata.stock_quantity}}件</li>
-                <li>上架时间:{{goosinfodata.add_time | fmtdate('YYYY-MM-DD')}}</li>
+                <li>商品货号：{{goosinfodata.goods_no}}</li>
+                <li>库存情况：{{goosinfodata.stock_quantity}}件</li>
+                <li>上架时间：{{goosinfodata.add_time | fmtdate('YYYY-MM-DD')}}</li>
             </ul>
         </div>
         <!--4.0 商品的图文信息描述（使用一个新组goosdesc.vue件来完成）
@@ -64,6 +71,31 @@
     .subnumber{
         display: inline-block;
     }
+    .count{
+        position: relative;
+    }
+
+    .ball{
+        width: 20px;
+        height: 20px;
+        background-color: red;
+        border-radius: 50%;
+        position:absolute;
+        top:0px;
+        left:100px;
+        z-index: 50;
+        transition: all .5s cubic-bezier(.35,-0.44,.83,.67);
+    }
+    /*小球动画样式控制*/
+   /*.drop-enter-active, .drop-leave-active {*/
+       /*transition: all 1s;*/
+   /*}*/
+
+   /*.drop-enter, .drop-leave-active {*/
+       /*opacity: 0;*/
+   /*}*/
+
+
    /*2.0 商品购买区域end*/
 
     /*3.0 商品参数区域*/
@@ -88,11 +120,16 @@ import common from '../../kits/common.js';
 
 //2.0.1 导入subnumber.vue
 import SubNumber from '../subcomp/subnumber.vue';
-import {bus} from '../../bus.js';
+
+//6.0.2 注册commonvue.js
+import {vueobj} from '../../kits/commonvue.js';
+import {setItem} from '../../kits/localStorageHelper.js'
+
     export default{
         data(){
             return{
-                goodscount:1,
+                isshow : false,
+                goodscount:1, //商品的数量
                 imagelist:[], //1.0.2 这个变量存储的是当前商品的轮播图图片数组
                 goosinfodata:{} //2.0.2 这个变量存储的是当前商品的描述信息（包括标题，价格等）
             }
@@ -139,8 +176,34 @@ import {bus} from '../../bus.js';
                 let id = this.$route.params.id;
                 this.$router.push({name:'goodsdesc',params:{id:id}})
             },
-            toshopcar(){
-                bus.$emit('toshopcar',this.goodscount);
+            // 6.0.1 方法实现购物数据的通知
+            toshopdata(){
+                //1.0 发送通知
+                vueobj.$emit('shopdata',this.goodscount);
+
+                //2.0 讲商品的购物数据存储到localStorage
+                let id = this.$route.params.id;
+                setItem({goodsid:id,count:this.goodscount})
+
+                //3.0 出现动画效果
+                this.isshow = !this.isshow;
+            },
+            //7.0 定义小球动画
+            beforeEnter(el){
+                //表示小球的动画开始状态
+                //通常我们使用的是translate3d来开启硬件加速，提高动画的流畅度
+                el.style.transform = 'translate3d(0,0,0)';
+            },
+            enter(el,done){
+                //注意点：想要有动画的过程，就必须保证页面是在刷新的
+                var offset = el.offsetWidth; //设置这句话就能保证小球实时移动
+                //表示小球的动画进行到最后的状态
+                el.style.transform = 'translate3d(115px,327px,0)';
+                done();
+            },
+            afterEnter(el){
+                //表示小球的动画结束状态,要将控制小球显示和隐藏的变量isshow复位
+                this.isshow = !this.isshow;
             }
         },
         components:{
