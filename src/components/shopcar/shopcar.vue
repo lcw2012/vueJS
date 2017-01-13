@@ -1,8 +1,9 @@
 <template>
 	<div class="tmpl">
-		<div class="row" v-for="item in shopcarlist">
+		<!--1.0 商品列表-->
+		<div class="row" v-for="(item,index) in shopcarlist">
 			<div class="leftdiv">
-				<mt-switch class="switch" v-model="value"></mt-switch>
+				<mt-switch class="switch" v-model="values[index]"></mt-switch>
 			</div>
 			<div class="centerdiv">
 				<img width="75" height="75" :src="item.thumb_path" alt="">
@@ -15,10 +16,51 @@
 			</div>
 		</div>
 
+		<!--2.0 总计-->
+		<div class="total">
+			<div class="left">
+				<h5>总计(不含运费)</h5>
+				<span>已经勾选商品0件,总价￥0元</span>
+			</div>
+			<div class="right">
+				<mt-button class="settm" type="danger" size="normal">去结算</mt-button>
+			</div>
+		</div>
+
+		{{values}}
 	</div>
 </template>
 
 <style scoped>
+	/*2.0 总计*/
+	.total{
+		padding: 10px;
+		background-color: rgba(1,1,1,0.1);
+		margin-top: 10px;
+		height: 80px;
+	}
+	.total h5{
+		color:black;
+		font-weight: bold;
+		margin-bottom: 10px;
+	}
+
+	.total .left{
+		width: 70%;
+		float: left;
+	}
+
+	.total .right{
+		width: 28%;
+		float: right;
+		height: 80px;
+	}
+
+	.total .settm{
+		margin-top: 10px;
+	}
+
+	/*1.0 商品列表*/
 	.row{
 		display: flex;
 		margin-top: 5px;
@@ -61,7 +103,7 @@
 export default{
 	data(){
 		return {
-			value:false,
+			values:[],  //用来存储每条数据的switch的值的
 			shopcarlist :[] //用来储存购物车中的商品
 		}
 	},
