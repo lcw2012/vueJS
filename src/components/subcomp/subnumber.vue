@@ -32,6 +32,10 @@
                count:1
             }
         },
+        props:['initcount'],
+        created(){
+          this.count = this.initcount>1?this.initcount:1;
+        },
         methods:{
             //1.0 加1
            add(){
