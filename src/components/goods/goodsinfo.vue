@@ -152,8 +152,8 @@ import {setItem} from '../../kits/localStorageHelper.js'
                });
            },
             //2.0.2 定义一个方法用来接收子组件传入过来的值
-            getcount(count){
-                this.goodscount = count;
+            getcount(obj){
+                this.goodscount = obj.count;
             },
             //2.0.3 定义个方法用来获取商品的介绍信息
             getgoodsinfo(){
@@ -198,7 +198,7 @@ import {setItem} from '../../kits/localStorageHelper.js'
                 //注意点：想要有动画的过程，就必须保证页面是在刷新的
                 var offset = el.offsetWidth; //设置这句话就能保证小球实时移动
                 //表示小球的动画进行到最后的状态
-                el.style.transform = 'translate3d(115px,327px,0)';
+                el.style.transform = 'translate3d(125px,327px,0)';
                 done();
             },
             afterEnter(el){

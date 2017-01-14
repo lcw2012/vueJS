@@ -11,8 +11,8 @@
 			<div class="rightdiv">
 				<h4>{{item.title}}</h4>
 				<span>￥{{item.sell_price}}</span>
-				<subnumber :initcount="item.count" class="subnumber" v-on:count="getcount"></subnumber>
-				<a href="#">删除</a>
+				<subnumber :initcount="item.count" :goodsid="item.id" class="subnumber" v-on:count="getcount"></subnumber>
+				<a @click="del(item.id)">删除</a>
 			</div>
 		</div>
 
@@ -98,14 +98,14 @@
 
 <script>
 	import subnumber from '../subcomp/subnumber.vue';
-	import {getItem} from '../../kits/localStorageHelper.js'
+	import {getItem,setItem,subStrictItem,removeItem} from '../../kits/localStorageHelper.js'
 	import common from '../../kits/common.js';
 export default{
 	data(){
 		return {
 			selectedcount:0, //选择商品的总个数
 			values:[],  //用来存储每条数据的switch的值的,只要选中了，里面的存储的就是true
-			shopcarlist :[] //用来储存购物车中的商品[thumb_path:'http://..',count:1]
+			shopcarlist :[] //用来储存购物车中的商品[thumb_path:'http://..',count:1,id:89]
 		}
 	},
 	created(){
@@ -113,8 +113,31 @@ export default{
 	},
 	methods:{
 		//获取到数量选择组件中的数值
-		getcount(count){
+		getcount(resobj){
+			//1.0 判断resobj中的type类型
+			if(resobj.type =='add'){
+				//增加一个商品数量
+				this.add(resobj);
+				//2.0 更新掉shopcarlist中当前商品对于的数量
+				this.updateshopcarlist(1,resobj.goodsid);
+			}else if(resobj.type=="substrict"){
+				//减少一个商品数量
+				subStrictItem(resobj.goodsid);
+				//2.0 更新掉shopcarlist中当前商品对于的数量
+				this.updateshopcarlist(-1,resobj.goodsid);
+			}
 
+		},
+		add(resobj){
+			setItem({goodsid:resobj.goodsid,count:1});
+		},
+		updateshopcarlist(count,goodsid){
+			//1.0 找到商品的数据
+			for(let i = 0; i<this.shopcarlist.length;i++){
+				if(this.shopcarlist[i].id == goodsid){
+					this.shopcarlist[i].count = this.shopcarlist[i].count + count;
+				}
+			}
 		},
 		//根据商品id获取商品数据
 		initPageData(){
@@ -170,7 +193,19 @@ export default{
 			});
 
 			return totalAmount;
+		},
+		//删除商品数据
+		del(goodsid){
+			//1.0 将shopcarlist中的数据删除
+			let index = this.shopcarlist.findIndex(c=>c.id == goodsid);
+			if(index >=0) {
+				this.shopcarlist.splice(index, 1);
+			}
+
+			//2.0 删除localStorage中的数据
+			removeItem(goodsid);
 		}
+
 	},
 	computed:{
 		//统计总价格
