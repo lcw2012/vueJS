@@ -23,7 +23,7 @@
 				<span>已经勾选商品{{selectedcount}}件,总价￥{{settment}}元</span>
 			</div>
 			<div class="right">
-				<mt-button class="settm" type="danger" size="normal">去结算</mt-button>
+				<mt-button class="settm" type="danger" size="normal" @click="tosettemt">去结算</mt-button>
 			</div>
 		</div>
 
@@ -100,6 +100,9 @@
 	import subnumber from '../subcomp/subnumber.vue';
 	import {getItem,setItem,subStrictItem,removeItem} from '../../kits/localStorageHelper.js'
 	import common from '../../kits/common.js';
+	import { Toast } from 'mint-ui';
+	import {getUserId,setUserId} from '../../kits/loginHelper.js';
+
 export default{
 	data(){
 		return {
@@ -112,6 +115,25 @@ export default{
 		this.initPageData();
 	},
 	methods:{
+		//去结算
+		tosettemt(){
+			//1.0 判断是否有选择至少一个商品
+			let newarr= this.values.filter(c=>c ==true);
+			if(newarr.length==0){
+				Toast('请至少选择一个商品');
+				return;
+			}
+
+			//2.0 判断是否有登录
+			let userid = getUserId();
+			if(!userid){
+				//应该跳转到登录组件
+				this.$router.push({name:'login'});
+			}else{
+				//跳转到订单页面
+				this.$router.push({name:'setorder'});
+			}
+		},
 		//获取到数量选择组件中的数值
 		getcount(resobj){
 			//1.0 判断resobj中的type类型

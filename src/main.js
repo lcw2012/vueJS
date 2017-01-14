@@ -50,6 +50,8 @@ import goodslist from './components/goods/goodslist.vue';
 import goodsinfo from './components/goods/goodsinfo.vue';
 import goodscomment from './components/goods/comment.vue';
 import goodsdesc from './components/goods/goodsdesc.vue';
+import login from './components/login/login.vue';
+import setorder from './components/order/setorder.vue';
 
 
 
@@ -70,7 +72,9 @@ let router = new vueRouter({
 		{name:'goodslist',path:'/goods/goodslist',component:goodslist}, //商品列表组件
 		{name:'goodsinfo',path:'/goods/goodsinfo/:id',component:goodsinfo}, //商品详情组件
 		{name:'goodscomment',path:'/goods/comment/:id',component:goodscomment}, //商品的评论组件
-		{name:'goodsdesc',path:'/goods/goodsdesc/:id',component:goodsdesc} //商品的图文组件
+		{name:'goodsdesc',path:'/goods/goodsdesc/:id',component:goodsdesc} ,//商品的图文组件
+		{name:'login',path:'/login',component:login}, //登录页面的路由规则
+		{name:'setorder',path:'/order/setorder',component:setorder} //下订单页面
 
 	]
 });
