@@ -178,7 +178,6 @@ export default{
 					goodsObj[item.goodsid] = item.count;
 				}
 			});
-
 			//1.0.1 将goodsObj中的属性名称拿出来
 			let idarr = [];
 			for(let goodsidvalue in goodsObj){

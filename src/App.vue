@@ -17,21 +17,17 @@
 			<span class="mui-icon mui-icon-home"></span>
 				<span class="mui-tab-label">首页</span>
 		</router-link>
-
 		<router-link class="mui-tab-item" to="/member">
 		<span class="mui-icon mui-icon-contact">
-				
 			</span>
 			<span class="mui-tab-label">会员</span>
 		</router-link>
-
 		<router-link class="mui-tab-item" to="/shopcar">
 		<span class="mui-icon mui-icon-home">
 			<span id="badge" class="mui-badge">0</span>
 		</span>
 			<span class="mui-tab-label">购物车</span>
 		</router-link>
-
 		<router-link class="mui-tab-item" to="/search">
 			<span class="mui-icon mui-icon-gear"></span>
 				<span class="mui-tab-label">搜索</span>
@@ -39,7 +35,6 @@
 	</nav>
 	</div>
 </template>
-
 <script>
 	//6.0.2 注册commonvue.js(用来接收goodsinfo.vue中通过vueobj.$emit()发送过来的数据 )
 	import {vueobj} from './kits/commonvue.js';
@@ -49,11 +44,9 @@
 		let badge = document.getElementById('badge');
 		let count = badge.innerText - 0; // 获取原始值
 		count+=data;  // 在原始值上增加新数据
-
 		// 将新数据同步到dom中
 		badge.innerText = count;
 	});
-
 	export default{
 		data(){
 			return {
@@ -82,9 +75,7 @@
 			}
 		}
 	}
-
 </script>
-
 <style scoped>
 	.back{
 		position: fixed;

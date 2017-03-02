@@ -1,12 +1,9 @@
-//  这个文件就是webpack的默认配置文件，默认的名称为：webpack.config.js
-//  将来只需要在cmd面板上执行 webpack就会自动去查找webpack.config.js中的内容进行相关的打包操作
 var HtmlwebpackPlugin = require('html-webpack-plugin');
-
 module.exports = {
-	entry:'./src/main.js', //webpack要打包的源文件是 src/main.js
+	entry:'./src/main.js',
 	output:{
-		path:'./dist/', //告诉webpack将来所有的打包文件都要放到这个目录下
-		filename:'build.js' //打包以后输出的文件名称,./dist/build.js代表输出到当前目录下
+		path:'./dist/',
+		filename:'build.js'
 	},
 	module:{
 		loaders:[
@@ -30,10 +27,6 @@ module.exports = {
 			{
 				test:/\.less$/,
 				loader:'style-loader!css-loader!autoprefixer-loader!less-loader' //加载顺序先执行css-loader再执行style-loader所以这个编写的顺序一定不能颠倒，否则无效
-			},
-			{
-				test:/\.scss$/,
-				loader:'style-loader!css-loader!autoprefixer-loader!sass-loader' //加载顺序先执行css-loader再执行style-loader所以这个编写的顺序一定不能颠倒，否则无效
 			},
 			 {
 		        test: /\.(png|jpg|ttf|svg|gif)$/,  //表示匹配的文件后缀名为 .png 或者.jpg也可以自己增加

@@ -42,77 +42,7 @@
 
     </div>
 </template>
-<style scoped>
-   .subimgsilder, .sell,.params,.footer{
-       border: 1px solid rgba(92,92,92,0.3);
-       margin: 5px;
-       padding: 5px;
-       border-radius:5px;
-   }
-    /*2.0 商品购买区域*/
-   .sell{
-       padding-bottom: 20px;
-   }
-    .sell h4{
-        color:#0094ff;
-        border-bottom: 1px solid rgba(92,92,92,0.3);
-        padding: 10px 0;
-    }
-   .sell .sellprice s{
-       margin-right: 20px;
-   }
-   .sell .sellprice, .sell .count{
-       padding: 10px;
-   }
-    .sell .sellprice span{
-        color:red;
-        font-size:18px;
-    }
-    .subnumber{
-        display: inline-block;
-    }
-    .count{
-        position: relative;
-    }
 
-    .ball{
-        width: 20px;
-        height: 20px;
-        background-color: red;
-        border-radius: 50%;
-        position:absolute;
-        top:0px;
-        left:100px;
-        z-index: 50;
-        transition: all .5s cubic-bezier(.35,-0.44,.83,.67);
-    }
-    /*小球动画样式控制*/
-   /*.drop-enter-active, .drop-leave-active {*/
-       /*transition: all 1s;*/
-   /*}*/
-
-   /*.drop-enter, .drop-leave-active {*/
-       /*opacity: 0;*/
-   /*}*/
-
-
-   /*2.0 商品购买区域end*/
-
-    /*3.0 商品参数区域*/
-    .h6{
-        padding: 5px;
-        border-bottom: 1px solid rgba(92,92,92,0.3);
-    }
-    .params li{
-        list-style: none;
-    }
-   /*3.0 商品参数区域end*/
-
-    /*4.0 底部*/
-    .mt1{
-        margin-top: 20px;
-    }
-</style>
 <script>
 //1.0.1 导入组件subimgsilder.vue
 import SubImgSilder from '../subcomp/subimgsilder.vue';
@@ -212,3 +142,74 @@ import {setItem} from '../../kits/localStorageHelper.js'
         }
     }
 </script>
+<style scoped>
+   .subimgsilder, .sell,.params,.footer{
+       border: 1px solid rgba(92,92,92,0.3);
+       margin: 5px;
+       padding: 5px;
+       border-radius:5px;
+   }
+    /*2.0 商品购买区域*/
+   .sell{
+       padding-bottom: 20px;
+   }
+    .sell h4{
+        color:#0094ff;
+        border-bottom: 1px solid rgba(92,92,92,0.3);
+        padding: 10px 0;
+    }
+   .sell .sellprice s{
+       margin-right: 20px;
+   }
+   .sell .sellprice, .sell .count{
+       padding: 10px;
+   }
+    .sell .sellprice span{
+        color:red;
+        font-size:18px;
+    }
+    .subnumber{
+        display: inline-block;
+    }
+    .count{
+        position: relative;
+    }
+
+    .ball{
+        width: 20px;
+        height: 20px;
+        background-color: red;
+        border-radius: 50%;
+        position:absolute;
+        top:0px;
+        left:100px;
+        z-index: 50;
+        transition: all .5s cubic-bezier(.35,-0.44,.83,.67);
+    }
+    /*小球动画样式控制*/
+   /*.drop-enter-active, .drop-leave-active {*/
+       /*transition: all 1s;*/
+   /*}*/
+
+   /*.drop-enter, .drop-leave-active {*/
+       /*opacity: 0;*/
+   /*}*/
+
+
+   /*2.0 商品购买区域end*/
+
+    /*3.0 商品参数区域*/
+    .h6{
+        padding: 5px;
+        border-bottom: 1px solid rgba(92,92,92,0.3);
+    }
+    .params li{
+        list-style: none;
+    }
+   /*3.0 商品参数区域end*/
+
+    /*4.0 底部*/
+    .mt1{
+        margin-top: 20px;
+    }
+</style>
